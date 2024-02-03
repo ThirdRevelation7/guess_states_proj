@@ -5,7 +5,7 @@ import subprocess
 screen = turtle.Screen()
 screen.title("Guess The States")
 image = "us_map.gif"
-screen.setup(width=800, height=800)
+screen.setup(width=700, height=490)
 screen.addshape(image)
 turtle.shape(image)
 
@@ -19,16 +19,12 @@ while len(states_guessed) < 50:
     user_guess = screen.textinput(title=f"{len(states_guessed)}/50 States Guessed",
                                    prompt="Enter State name or 'Exit' to quit. ").title()
     if user_guess == "Exit":
-        missed_states = []
-        for state in all_states:
-            if state not in states_guessed:
-                missed_states.append(state)
+        missed_states = [state for state in all_states if state not in states_guessed]
         new_data = pandas.DataFrame(missed_states)
         new_data.to_csv("states_to_learn.csv")
         subprocess.run(["open", "states_to_learn.csv"])
-
         break
-    if user_guess in all_states:
+    if user_guess in all_states and user_guess not in states_guessed:
         states_guessed.append(user_guess)
         floof = turtle.Turtle()
         floof.up()
